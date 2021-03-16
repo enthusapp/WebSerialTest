@@ -1,0 +1,14 @@
+<title>WebSerialTest</title>
+<head></head>
+<body>
+  <input type="button" value="test" id="test"/>
+</body>
+<script>
+  const test = async () => {
+    const port = await navigator.serial.requestPort({});
+    console.log(port);
+  };
+  document.getElementById('test').addEventListener('click', () => {
+    test();
+  });
+</script>
