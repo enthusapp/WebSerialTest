@@ -3,6 +3,10 @@
 <body>
   <input type="button" value="test" id="test"/>
   <input type="button" value="read" id="read"/>
+  <figure>
+    <figcaption>로그</figcaption>
+    <dl id="log"></dl>
+  </figure>
 </body>
 <script>
   const serialTest = async () => {
@@ -63,11 +67,22 @@
         });
     });
   });
+  
+  const log = document.getElementById('log');
+
+  const logger = str => {
+    const liE = document.createElement('dd');
+    liE.innerText = str;
+    log.appendChild(liE);
+    const childs = log.getElementsByTagName('dd');
+    if (childs.length > 20) log.removeChild(childs[0]);
+    console.log(str);
+  };
+
   let utf8decoder = new TextDecoder();
   document.getElementById('read').addEventListener('click', async () => {
     if (!usbA) return;
     const r = await usbA.transferIn(1, 64)
-    const data = new Uint8Array(r.data.buffer);
-    console.log(utf8decoder.decode(data));
+    logger(utf8decoder.decode(new Uint8Array(r.data.buffer)));
   });
 </script>
